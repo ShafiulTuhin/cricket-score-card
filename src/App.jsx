@@ -23,6 +23,7 @@ function App() {
   const [noBall, setNoBall] = useState(0);
   const [ball, setBall] = useState(0);
   const [over, setOver] = useState(0);
+  const [fallOfWickets, setFallOfWickets] = useState([]);
 
   const updateScore = (btn) => {
     const { name, score: value } = btn;
@@ -37,6 +38,7 @@ function App() {
       setOwnScore(0);
       setWicket(newWicket);
       setBall(ball + 1);
+      setFallOfWickets((prev) => [...prev, `${newScore}/${newWicket}`]);
     }
 
     setScore(newScore);
@@ -51,6 +53,7 @@ function App() {
     if (name === "No-Ball") {
       setBall(ball);
       setNoBall(noBall + 1);
+      setMessage("Free hit!");
     }
     if (ball >= 5 && name !== "Wide") {
       setOver(over + 1);
@@ -93,12 +96,22 @@ function App() {
         </div>
       </div>
       <div className="flex gap-5 px-4 pt-5">
-        <h2>Extras:</h2>
+        <h2 className="font-bold">Extras:</h2>
         <div className="flex justify-between items-center gap-10">
           <h2>wide: {wide}</h2>
           <h2>No ball: {noBall}</h2>
           <h2>Total: {wide + noBall}</h2>
         </div>
+      </div>
+      <div className="px-4  mt-2">
+        <h2 className="font-bold">
+          Wicket fall:
+          {fallOfWickets.map((wicket, ind) => (
+            <span key={ind} className="mx-5 font-normal text-red-600">
+              {wicket}
+            </span>
+          ))}
+        </h2>
       </div>
 
       {/* <div className=" flex gap-4 px-4 py-10 text-center">
