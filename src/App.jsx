@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./App.css";
+import Logo from "./assets/logo.jpg";
 
 const buttons = [
   { name: "1", score: 1 },
@@ -62,8 +63,11 @@ function App() {
   };
 
   return (
-    <div className="max-w-[650px] w-full mx-auto py-5 border-2 border-blue-600 ">
-      <h2 className="text-center text-3xl font-bold">Score Card!</h2>
+    <div className="max-w-[650px] w-full mx-auto py-5 border-2 border-blue-600">
+      <div className="flex justify-center gap-3 items-center text-3xl font-bold">
+        <img src={Logo} alt="" className="w-12 h-12" />
+        <h2> Score Card!</h2>
+      </div>
       <div className="divider"></div>
       <h2 className="text-center text-red-500 font-bold mb-5">{message}</h2>
       <div className="flex justify-between items-center px-4">
