@@ -31,6 +31,7 @@ function App() {
     const newOwnScore = ownScore + value;
     const newWicket = wicket + 1;
     const newBall = ball + 1;
+    const newOver = over + 1;
 
     if (name !== "Wide" && name !== "No-Ball") {
       setOwnScore(newOwnScore);
@@ -49,9 +50,21 @@ function App() {
       setBall(ball);
       setNoBall(noBall + 1);
     }
+    if (ownScore < 50 && newOwnScore >= 50) {
+      setMessage("Congratulations! Half Century!");
+    } else if (ownScore < 100 && newOwnScore >= 100) {
+      setMessage("Congratulations! Century!");
+    } else {
+      setMessage("");
+    }
     if (newBall >= 6 && name !== "Wide") {
-      setOver(over + 1);
+      setOver(newOver);
       setBall(0);
+      console.log("Over", newOver);
+
+      if (newOver >= 5) {
+        setMessage("Game over!");
+      }
     }
     if (name === "Wicket") {
       setOwnScore(0);
@@ -63,17 +76,11 @@ function App() {
       ]);
       setWicket(newWicket);
       setBall(newBall);
-      if (newWicket >= 5) {
+      console.log(newWicket);
+
+      if (newWicket === 5) {
         setMessage("Game over!");
       }
-    }
-
-    if (ownScore < 50 && newOwnScore >= 50) {
-      setMessage("Congratulations! Half Century!");
-    } else if (ownScore < 100 && newOwnScore >= 100) {
-      setMessage("Congratulations! Century!");
-    } else {
-      setMessage("");
     }
   };
 
