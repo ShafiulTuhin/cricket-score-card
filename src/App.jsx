@@ -18,7 +18,7 @@ function App() {
   const [ownScore, setOwnScore] = useState(0);
   const [message, setMessage] = useState("");
   const [wicket, setWicket] = useState(0);
-  // const [playerName, setPlayerName] = useState("");
+  const [playerName, setPlayerName] = useState([]);
   const [wide, setWide] = useState(0);
   const [noBall, setNoBall] = useState(0);
   const [ball, setBall] = useState(0);
@@ -27,24 +27,28 @@ function App() {
 
   const updateScore = (btn) => {
     const { name, score: value } = btn;
-    // console.log(name, value);
     const newScore = score + value;
     const newOwnScore = ownScore + value;
     const newWicket = wicket + 1;
+    const newBall = ball + 1;
     if (name !== "Wide" && name !== "No-Ball") {
       setOwnScore(newOwnScore);
     }
     if (name === "Wicket") {
       setOwnScore(0);
       setWicket(newWicket);
-      setBall(ball + 1);
+      setBall(newBall);
       setFallOfWickets((prev) => [...prev, `${newScore}/${newWicket}`]);
+      setPlayerName((prev) => [
+        ...prev,
+        `Batsman-${newWicket}: ${newOwnScore}`,
+      ]);
     }
 
     setScore(newScore);
 
     if (value != 0) {
-      setBall(ball + 1);
+      setBall(newBall);
     }
     if (name === "Wide") {
       setBall(ball);
@@ -55,7 +59,7 @@ function App() {
       setNoBall(noBall + 1);
       setMessage("Free hit!");
     }
-    if (ball >= 5 && name !== "Wide") {
+    if (newBall >= 6 && name !== "Wide") {
       setOver(over + 1);
       setBall(0);
     }
@@ -81,11 +85,9 @@ function App() {
       <h2 className="text-center text-red-500 font-bold mb-5">{message}</h2>
       <div className="flex justify-between items-center px-4">
         <div className="space-y-4">
+          <h2 className="text-start font-bold text-2xl">Total Run: {score}</h2>
           <h2 className="text-center font-bold text-2xl ">
-            Total Score: {score}
-          </h2>
-          <h2 className="text-center font-bold text-2xl ">
-            Player Score: {ownScore}
+            Player's Run: {ownScore}
           </h2>
         </div>
         <div className="space-y-4">
@@ -94,6 +96,12 @@ function App() {
           </h2>
           <h2 className="text-center font-bold text-2xl">Wicket: {wicket}</h2>
         </div>
+      </div>
+      <div className="px-4 mt-4">
+        <h2 className="font-bold">Batting:</h2>
+        {playerName.map((player, ind) => (
+          <h2 key={ind}>{player}</h2>
+        ))}
       </div>
       <div className="flex gap-5 px-4 pt-5">
         <h2 className="font-bold">Extras:</h2>
@@ -118,7 +126,7 @@ function App() {
         <p>Extra: {extra}</p>
         <p>Wide: {wide}</p>
       </div> */}
-      <div className="flex flex-wrap justify-center gap-4 py-20 px-5">
+      <div className="flex flex-wrap justify-center gap-4 py-20 px-5 sm:w-[400px] w-full mx-auto">
         {buttons.map((btn, ind) => (
           <button
             key={ind}
