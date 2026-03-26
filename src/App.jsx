@@ -31,18 +31,9 @@ function App() {
     const newOwnScore = ownScore + value;
     const newWicket = wicket + 1;
     const newBall = ball + 1;
+
     if (name !== "Wide" && name !== "No-Ball") {
       setOwnScore(newOwnScore);
-    }
-    if (name === "Wicket") {
-      setOwnScore(0);
-      setWicket(newWicket);
-      setBall(newBall);
-      setFallOfWickets((prev) => [...prev, `${newScore}/${newWicket}`]);
-      setPlayerName((prev) => [
-        ...prev,
-        `Batsman-${newWicket}: ${newOwnScore}`,
-      ]);
     }
 
     setScore(newScore);
@@ -57,16 +48,27 @@ function App() {
     if (name === "No-Ball") {
       setBall(ball);
       setNoBall(noBall + 1);
-      setMessage("Free hit!");
     }
     if (newBall >= 6 && name !== "Wide") {
       setOver(over + 1);
       setBall(0);
     }
+    if (name === "Wicket") {
+      setOwnScore(0);
 
-    if (newWicket >= 5 || over >= 5) {
-      setMessage("Game over!");
-    } else if (ownScore < 50 && newOwnScore >= 50) {
+      setFallOfWickets((prev) => [...prev, `${newScore}/${newWicket}`]);
+      setPlayerName((prev) => [
+        ...prev,
+        `Batsman-${newWicket}: ${newOwnScore}`,
+      ]);
+      setWicket(newWicket);
+      setBall(newBall);
+      if (newWicket >= 5) {
+        setMessage("Game over!");
+      }
+    }
+
+    if (ownScore < 50 && newOwnScore >= 50) {
       setMessage("Congratulations! Half Century!");
     } else if (ownScore < 100 && newOwnScore >= 100) {
       setMessage("Congratulations! Century!");
@@ -98,15 +100,17 @@ function App() {
         </div>
       </div>
       <div className="px-4 mt-4">
-        <h2 className="font-bold">Batting:</h2>
+        <h2 className="font-bold ">Batting:</h2>
         {playerName.map((player, ind) => (
-          <h2 key={ind}>{player}</h2>
+          <h2 className="" key={ind}>
+            {player}
+          </h2>
         ))}
       </div>
       <div className="flex gap-5 px-4 pt-5">
         <h2 className="font-bold">Extras:</h2>
         <div className="flex justify-between items-center gap-10">
-          <h2>wide: {wide}</h2>
+          <h2>Wide: {wide}</h2>
           <h2>No ball: {noBall}</h2>
           <h2>Total: {wide + noBall}</h2>
         </div>
@@ -122,10 +126,6 @@ function App() {
         </h2>
       </div>
 
-      {/* <div className=" flex gap-4 px-4 py-10 text-center">
-        <p>Extra: {extra}</p>
-        <p>Wide: {wide}</p>
-      </div> */}
       <div className="flex flex-wrap justify-center gap-4 py-20 px-5 sm:w-[400px] w-full mx-auto">
         {buttons.map((btn, ind) => (
           <button
