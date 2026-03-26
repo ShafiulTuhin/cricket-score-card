@@ -33,23 +33,25 @@ function App() {
     const newBall = ball + 1;
     const newOver = over + 1;
 
-    if (name !== "Wide" && name !== "No-Ball") {
+    // Set player own score
+    if (name !== "Wide") {
       setOwnScore(newOwnScore);
     }
-
+    // set total score
     setScore(newScore);
-
-    if (value != 0) {
-      setBall(newBall);
-    }
+    //Count ball
+    setBall(newBall);
+    // count ball wihtout a wide ball and set total wide
     if (name === "Wide") {
       setBall(ball);
       setWide(wide + 1);
     }
+    //Count ball without a no-ball and set total no-ball
     if (name === "No-Ball") {
       setBall(ball);
       setNoBall(noBall + 1);
     }
+    //Set message for 50 and 100 score for a player
     if (ownScore < 50 && newOwnScore >= 50) {
       setMessage("Congratulations! Half Century!");
     } else if (ownScore < 100 && newOwnScore >= 100) {
@@ -57,10 +59,10 @@ function App() {
     } else {
       setMessage("");
     }
-    if (newBall >= 6 && name !== "Wide") {
+    //
+    if (newBall >= 6 && name !== "Wide" && name !== "No-Ball") {
       setOver(newOver);
       setBall(0);
-      console.log("Over", newOver);
 
       if (newOver >= 5) {
         setMessage("Game over!");
@@ -68,19 +70,13 @@ function App() {
     }
     if (name === "Wicket") {
       setOwnScore(0);
-
+      setWicket(newWicket);
+      setBall(newBall);
       setFallOfWickets((prev) => [...prev, `${newScore}/${newWicket}`]);
       setPlayerName((prev) => [
         ...prev,
         `Batsman-${newWicket}: ${newOwnScore}`,
       ]);
-      setWicket(newWicket);
-      setBall(newBall);
-      console.log(newWicket);
-
-      if (newWicket === 5) {
-        setMessage("Game over!");
-      }
     }
   };
 
