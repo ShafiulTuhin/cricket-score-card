@@ -10,6 +10,7 @@ const buttons = [
   { name: "5", score: 5 },
   { name: "6", score: 6 },
   { name: "Wide", score: 1 },
+  { name: "No-Ball", score: 1 },
   { name: "Wicket", score: 0 },
 ];
 function App() {
@@ -17,20 +18,19 @@ function App() {
   const [ownScore, setOwnScore] = useState(0);
   const [message, setMessage] = useState("");
   const [wicket, setWicket] = useState(0);
-  // const [wide, setWide] = useState(0);
-  // const [extra, setExtra] = useState(0);
+  // const [playerName, setPlayerName] = useState("");
+  const [wide, setWide] = useState(0);
+  const [noBall, setNoBall] = useState(0);
   const [ball, setBall] = useState(0);
   const [over, setOver] = useState(0);
 
   const updateScore = (btn) => {
     const { name, score: value } = btn;
     // console.log(name, value);
-
     const newScore = score + value;
     const newOwnScore = ownScore + value;
     const newWicket = wicket + 1;
-
-    if (name !== "Wide") {
+    if (name !== "Wide" && name !== "No-Ball") {
       setOwnScore(newOwnScore);
     }
     if (name === "Wicket") {
@@ -46,11 +46,17 @@ function App() {
     }
     if (name === "Wide") {
       setBall(ball);
+      setWide(wide + 1);
+    }
+    if (name === "No-Ball") {
+      setBall(ball);
+      setNoBall(noBall + 1);
     }
     if (ball >= 5 && name !== "Wide") {
       setOver(over + 1);
       setBall(0);
     }
+
     if (newWicket >= 5 || over >= 5) {
       setMessage("Game over!");
     } else if (ownScore < 50 && newOwnScore >= 50) {
@@ -86,6 +92,15 @@ function App() {
           <h2 className="text-center font-bold text-2xl">Wicket: {wicket}</h2>
         </div>
       </div>
+      <div className="flex gap-5 px-4 pt-5">
+        <h2>Extras:</h2>
+        <div className="flex justify-between items-center gap-10">
+          <h2>wide: {wide}</h2>
+          <h2>No ball: {noBall}</h2>
+          <h2>Total: {wide + noBall}</h2>
+        </div>
+      </div>
+
       {/* <div className=" flex gap-4 px-4 py-10 text-center">
         <p>Extra: {extra}</p>
         <p>Wide: {wide}</p>
